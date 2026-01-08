@@ -2,6 +2,8 @@
 
 import styles from "./page.module.css";
 
+import {ChangeEvent, useState} from "react";
+
 import Button from "@/components/Button/Button";
 import InlineError from "@/components/InlineError/InlineError";
 import Input from "@/components/Input/Input";
@@ -9,6 +11,152 @@ import Label from "@/components/Label/Label";
 import TextArea from "@/components/TextArea/TextArea";
 
 const Home: React.FC = () => {
+	// States
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+	const [email, setEmail] = useState("");
+	const [queryType, setQueryType] = useState("");
+	const [message, setMessage] = useState("");
+	const [isConsent, setIsConsent] = useState(false);
+
+	const [isFirstNameErrorVisible, setIsFirstNameErrorVisible] =
+		useState(false);
+	const [isLastNameErrorVisible, setIsLastNameErrorVisible] =
+		useState(false);
+	const [isEmailErrorVisible, setIsEmailErrorVisible] = useState(false);
+	const [isQueryErrorVisible, setIsQueryErrorVisible] = useState(false);
+	const [isMessageErrorVisible, setIsMessageErrorVisible] =
+		useState(false);
+	const [isCheckboxErrorVisible, setIsCheckboxErrorVisible] =
+		useState(false);
+
+	// Helpers
+	const isValidFirstName = (firstName: string): boolean => {
+		return firstName.trim() !== "";
+	};
+
+	const isValidLastName = (lastName: string): boolean => {
+		return lastName.trim() !== "";
+	};
+
+	const isValidEmail = (email: string): boolean => {
+		const validEmailRegex = /^[a-z]+(\.)?[a-z]+@[a-z]+\.[a-zA-Z]{2,10}$/;
+
+		const isValid = validEmailRegex.test(email) && email.trim() !== "";
+
+		return isValid;
+	};
+
+	const isValidQueryType = (queryType: string): boolean => {
+		return queryType.trim() !== "";
+	};
+
+	const isValidMessage = (message: string): boolean => {
+		return message.trim() !== "";
+	};
+
+	const isValidCheckbox = (isConsent: boolean): boolean => {
+		return isConsent;
+	};
+
+	// Handlers
+	const handleFirstNameInputChange = (
+		event: ChangeEvent<HTMLInputElement>,
+	): void => {
+		const value = event.target.value;
+
+		setFirstName(value);
+
+		setIsFirstNameErrorVisible(!isValidFirstName(value));
+	};
+
+	const handleLastNameInputChange = (
+		event: ChangeEvent<HTMLInputElement>,
+	): void => {
+		const value = event.target.value;
+
+		setLastName(value);
+
+		setIsLastNameErrorVisible(!isValidLastName(value));
+	};
+
+	const handleEmailInputChange = (
+		event: ChangeEvent<HTMLInputElement>,
+	): void => {
+		const value = event.target.value;
+
+		setEmail(value);
+
+		setIsEmailErrorVisible(!isValidEmail(value));
+	};
+
+	const handleInputRadioChange = (
+		event: ChangeEvent<HTMLInputElement>,
+	): void => {
+		const value = event.target.value;
+
+		setQueryType(value);
+
+		setIsQueryErrorVisible(false);
+	};
+
+	const handleTextAreaChange = (
+		event: ChangeEvent<HTMLTextAreaElement>,
+	): void => {
+		const value = event.target.value;
+
+		setMessage(value);
+
+		setIsMessageErrorVisible(!isValidMessage(value));
+	};
+
+	const handleInputCheckBoxChange = (
+		event: ChangeEvent<HTMLInputElement>,
+	): void => {
+		const isChecked = event.target.checked;
+
+		setIsConsent(isChecked);
+
+		setIsCheckboxErrorVisible(false);
+	};
+
+	const handleSubmitButtonClick = () => {
+		const conditions = [
+			isValidFirstName(firstName),
+			isValidLastName(lastName),
+			isValidEmail(email),
+			isValidQueryType(queryType),
+			isValidMessage(message),
+			isValidCheckbox(isConsent),
+		];
+
+		const canSubmit = conditions.every(cond => cond);
+
+		if (canSubmit) {
+			// Do submit task
+			return;
+		}
+
+		// must be ordered in the same way
+		// the conditions were ordered for
+		// the correct error setter be triggred.
+		const errorSetters = [
+			setIsFirstNameErrorVisible,
+			setIsLastNameErrorVisible,
+			setIsEmailErrorVisible,
+			setIsQueryErrorVisible,
+			setIsMessageErrorVisible,
+			setIsCheckboxErrorVisible,
+		];
+
+		// Triggers the respective error setter.
+		[...conditions].forEach((cond, idx) => {
+			if (!cond) {
+				errorSetters[idx](true);
+			}
+		});
+	};
+
 	return (
 		<>
 			<form
@@ -27,10 +175,17 @@ const Home: React.FC = () => {
 								htmlFor="input-first-name"
 								isRequired={true}
 							/>
-							<Input hasError={false} id="input-first-name" type="text" />
+							<Input
+								hasError={isFirstNameErrorVisible}
+								id="input-first-name"
+								type="text"
+								autoFocus={true}
+								value={firstName}
+								onChange={handleFirstNameInputChange}
+							/>
 							<InlineError
 								label="This field is required"
-								isVisible={false}
+								isVisible={isFirstNameErrorVisible}
 							/>
 						</div>
 						<div className={`${styles.formField}`}>
@@ -39,10 +194,16 @@ const Home: React.FC = () => {
 								htmlFor="input-last-name"
 								isRequired={true}
 							/>
-							<Input hasError={false} id="input-last-name" type="text" />
+							<Input
+								hasError={isLastNameErrorVisible}
+								id="input-last-name"
+								type="text"
+								value={lastName}
+								onChange={handleLastNameInputChange}
+							/>
 							<InlineError
 								label="This field is required"
-								isVisible={false}
+								isVisible={isLastNameErrorVisible}
 							/>
 						</div>
 					</div>
@@ -53,15 +214,16 @@ const Home: React.FC = () => {
 							isRequired={true}
 						/>
 						<Input
-							hasError={false}
+							hasError={isEmailErrorVisible}
 							id="input-email"
 							type="email"
 							title="example@host.com"
-							pattern="^[a-z]+(\.)?[a-z]+@[a-z]+\.[a-zA-Z]{2,3}$"
+							value={email}
+							onChange={handleEmailInputChange}
 						/>
 						<InlineError
 							label="Please, enter a valid email address"
-							isVisible={false}
+							isVisible={isEmailErrorVisible}
 						/>
 					</div>
 					<div className={`${styles.formField}`}>
@@ -74,6 +236,7 @@ const Home: React.FC = () => {
 									id="radio-general"
 									value={"general"}
 									className={`${styles.radio}`}
+									onChange={handleInputRadioChange}
 								/>
 								<Label label="General Enquiry" htmlFor="radio-general" />
 							</div>
@@ -84,21 +247,27 @@ const Home: React.FC = () => {
 									id="radio-support"
 									value={"support"}
 									className={`${styles.radio}`}
+									onChange={handleInputRadioChange}
 								/>
 								<Label label="Support Request" htmlFor="radio-support" />
 							</div>
 						</div>
 						<InlineError
 							label="Please, select a query type"
-							isVisible={false}
+							isVisible={isQueryErrorVisible}
 						/>
 					</div>
 					<div className={`${styles.formField}`}>
 						<Label label="Message" htmlFor="textarea" isRequired={true} />
-						<TextArea hasError={false} id="textarea" />
+						<TextArea
+							hasError={isMessageErrorVisible}
+							id="textarea"
+							value={message}
+							onChange={handleTextAreaChange}
+						/>
 						<InlineError
 							label="This field is required"
-							isVisible={false}
+							isVisible={isMessageErrorVisible}
 						/>
 					</div>
 					<div className={`${styles.formField}`}>
@@ -109,6 +278,7 @@ const Home: React.FC = () => {
 								id="checkbox-consent"
 								value={"consent"}
 								className={`${styles.checbox}`}
+								onChange={handleInputCheckBoxChange}
 							/>
 							<Label
 								label="I consent to being contacted by the team"
@@ -118,12 +288,12 @@ const Home: React.FC = () => {
 						</div>
 						<InlineError
 							label="To submit this form, please, consent to being contacted"
-							isVisible={false}
+							isVisible={isCheckboxErrorVisible}
 						/>
 					</div>
 				</main>
 				<footer className={`${styles.formFooter}`}>
-					<Button label="Submit" />
+					<Button label="Submit" onClick={handleSubmitButtonClick} />
 				</footer>
 			</form>
 		</>
