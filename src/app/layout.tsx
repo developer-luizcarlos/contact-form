@@ -1,5 +1,13 @@
 import type {Metadata} from "next";
+import {Karla} from "next/font/google";
 import "./globals.css";
+
+const karlaFont = Karla({
+	display: "swap",
+	subsets: ["latin"],
+	style: ["normal", "italic"],
+	weight: ["200", "300", "400", "500", "700", "800"],
+});
 
 export const metadata: Metadata = {
 	title: "Contact Form",
@@ -13,7 +21,7 @@ const RootLayout = ({
 }>) => {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body className={`${karlaFont.className}`}>{children}</body>
 		</html>
 	);
 };
