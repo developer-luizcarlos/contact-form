@@ -1,0 +1,58 @@
+body {
+	background-color: hsl(148, 38%, 91%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.row {
+	display: flex;
+	column-gap: 15px;
+	width: 100%;
+}
+
+.form {
+	background-color: hsl(0, 0%, 100%);
+	border-radius: 10px;
+	display: grid;
+	row-gap: 5px;
+	width: clamp(400px, 45vw, 600px);
+	padding: 2rem;
+}
+
+.formTitle {
+	color: hsl(187, 24%, 22%);
+	font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.formField {
+	display: flex;
+	flex-direction: column;
+	row-gap: 3px;
+	width: 100%;
+}
+
+.formMain {
+	display: flex;
+	flex-direction: column;
+	row-gap: 2px;
+}
+
+.radioWrapper {
+	border: none;
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	column-gap: 5px;
+	outline: 1.5px solid hsl(186, 15%, 59%);
+	padding: clamp(5px, 1vw, 0.65rem);
+	width: 100%;
+}
+
+.radio {
+	accent-color: hsl(169, 82%, 27%);
+}
+
+.checbox {
+	accent-color: hsl(169, 82%, 27%);
+}
