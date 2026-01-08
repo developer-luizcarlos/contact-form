@@ -1,0 +1,16 @@
+.textArea {
+	border: none;
+	border-radius: 3px;
+	outline: 1.5px solid hsl(186, 15%, 59%);
+	font-family: inherit;
+	font-size: clamp(0.8rem, 1.2vw, 1rem);
+	font-weight: 500;
+	min-height: 85px;
+	width: 100%;
+	padding: clamp(5px, 1vw, 0.65rem);
+	resize: none;
+}
+
+.textAreaError {
+	outline-color: hsl(0, 66%, 54%);
+}

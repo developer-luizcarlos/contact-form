@@ -1,0 +1,11 @@
+.btn {
+	background-color: hsl(169, 82%, 27%);
+	border: none;
+	border-radius: 3px;
+	color: hsl(0, 0%, 100%);
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: 500;
+	width: 100%;
+	padding: 0.75rem;
+}

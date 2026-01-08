@@ -1,0 +1,10 @@
+.label {
+	color: hsl(187, 24%, 22%);
+	font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+	font-weight: 500;
+}
+
+.labelRequired::after {
+	content: "*";
+	margin-left: 3px;
+}

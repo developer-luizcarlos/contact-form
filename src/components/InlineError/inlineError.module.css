@@ -1,0 +1,9 @@
+.inlineError {
+	color: hsl(0, 66%, 54%);
+	font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+	font-weight: 500;
+}
+
+.inlineErrorHidden {
+	visibility: hidden;
+}
