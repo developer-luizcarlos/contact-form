@@ -8,6 +8,7 @@ import Button from "@/components/Button/Button";
 import InlineError from "@/components/InlineError/InlineError";
 import Input from "@/components/Input/Input";
 import Label from "@/components/Label/Label";
+import SuccessModal from "@/components/SuccessModal/SuccessModal";
 import TextArea from "@/components/TextArea/TextArea";
 
 const Home: React.FC = () => {
@@ -30,7 +31,26 @@ const Home: React.FC = () => {
 	const [isCheckboxErrorVisible, setIsCheckboxErrorVisible] =
 		useState(false);
 
+	const [shouldShowSuccessModal, setShouldShowSuccessModal] =
+		useState(false);
+
 	// Helpers
+	const clearFormData = (): void => {
+		setFirstName("");
+		setLastName("");
+		setEmail("");
+		setQueryType("");
+		setMessage("");
+		setIsConsent(false);
+
+		setIsFirstNameErrorVisible(false);
+		setIsLastNameErrorVisible(false);
+		setIsEmailErrorVisible(false);
+		setIsQueryErrorVisible(false);
+		setIsMessageErrorVisible(false);
+		setIsCheckboxErrorVisible(false);
+	};
+
 	const isValidFirstName = (firstName: string): boolean => {
 		return firstName.trim() !== "";
 	};
@@ -133,7 +153,10 @@ const Home: React.FC = () => {
 		const canSubmit = conditions.every(cond => cond);
 
 		if (canSubmit) {
-			// Do submit task
+			setShouldShowSuccessModal(true);
+
+			clearFormData();
+
 			return;
 		}
 
@@ -159,10 +182,16 @@ const Home: React.FC = () => {
 
 	return (
 		<>
+			{shouldShowSuccessModal && <SuccessModal />}
 			<form
 				action="#"
 				className={`${styles.form}`}
 				onSubmit={e => e.preventDefault()}
+				onFocus={() => {
+					if (shouldShowSuccessModal) {
+						setShouldShowSuccessModal(false);
+					}
+				}}
 			>
 				<header className={`${styles.footerHeader}`}>
 					<h1 className={`${styles.formTitle}`}>Contact Us</h1>
@@ -235,6 +264,7 @@ const Home: React.FC = () => {
 									name="query"
 									id="radio-general"
 									value={"general"}
+									checked={queryType === "general"}
 									className={`${styles.radio}`}
 									onChange={handleInputRadioChange}
 								/>
@@ -246,6 +276,7 @@ const Home: React.FC = () => {
 									name="query"
 									id="radio-support"
 									value={"support"}
+									checked={queryType === "support"}
 									className={`${styles.radio}`}
 									onChange={handleInputRadioChange}
 								/>
@@ -277,6 +308,7 @@ const Home: React.FC = () => {
 								name="checkbox-consent"
 								id="checkbox-consent"
 								value={"consent"}
+								checked={isConsent}
 								className={`${styles.checbox}`}
 								onChange={handleInputCheckBoxChange}
 							/>

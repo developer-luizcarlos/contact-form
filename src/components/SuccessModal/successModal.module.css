@@ -1,0 +1,28 @@
+.successModal {
+	background-color: hsl(187, 24%, 22%);
+	border-radius: 5px;
+	color: hsl(0, 0%, 100%);
+	position: fixed;
+	top: 10px;
+	width: clamp(200px, 40vw, 450px);
+	padding: 1rem;
+}
+
+.successHeader {
+	display: flex;
+	column-gap: 10px;
+	margin-bottom: 5px;
+}
+
+.successTitle {
+	font-size: clamp(15px, 1.2vw, 1.1rem);
+}
+
+.successIcon {
+	height: auto;
+	width: auto;
+}
+
+.successMessage {
+	font-size: clamp(0.8rem, 1vw, 0.95rem);
+}
